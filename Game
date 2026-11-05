@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+    <style>
+        body { font-family: Arial; text-align: center; background: #f4f4f9; }
+        .board { display: grid; grid-template-columns: repeat(3, 80px); gap: 5px; justify-content: center; margin: 20px auto; }
+        .cell { width: 80px; height: 80px; background: #fff; border: 2px solid #ccc; font-size: 32px; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        button { padding: 8px 16px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>Tic Tac Toe</h2>
+    <h3 id="status">Player X's turn</h3>
+    <div class="board" id="board"></div>
+    <button onclick="reset()">Reset</button>
+
+<script>
+    let board = Array(9).fill(""), player = "X", active = true;
+    const status = document.getElementById("status"), bDiv = document.getElementById("board");
+    const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+    function createBoard() {
+        innerHTML = board.map((v, i) => `<div class="cell" onclick="play(${i})">${v}</div>`).join("");
+    }
+
+    function play(i) {
+        if (board[i] || !active) return;
+        board[i] = player;
+        createBoard();
+        
+        if (wins.some(([a,b,c]) => board[a] && board[a] === board[b] && board[b] === board[c])) {
+            status.innerText = `Player ${player} Wins!`;
+            active = false;
+        } else if (!board.includes("")) {
+            status.innerText = "It's a draw!";
+            active = false;
+        } else {
+            player = player === "X" ? "O" : "X";
+            status.innerText = `Player ${player}'s turn`;
+        
+        }
+    }
+
+    function reset() {
+        board.fill(""); player = "X"; active = true;
+        status.innerText = "Player X's turn";
+        createBoard();
+    }
+
+    createBoard();
+</script>
+</body>
+</html>
